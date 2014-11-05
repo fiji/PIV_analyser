@@ -1,22 +1,21 @@
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.lang.ArrayIndexOutOfBoundsException;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.plugin.filter.PlugInFilter;
-import ij.process.ColorProcessor;
-import ij.process.FHT;
-import ij.process.ImageProcessor;
-import ij.process.FloatProcessor;
 import ij.gui.GenericDialog;
 import ij.gui.ImageCanvas;
 import ij.gui.ImageWindow;
 import ij.gui.Roi;
+import ij.plugin.filter.PlugInFilter;
+import ij.process.ColorProcessor;
+import ij.process.FHT;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <h3>PIV analysis</h3>

@@ -1,5 +1,5 @@
-import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DateUtils {
   public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";

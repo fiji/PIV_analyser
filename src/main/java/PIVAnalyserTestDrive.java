@@ -1,10 +1,14 @@
-import java.io.*;
-
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.io.FileInfo;
 import ij.io.FileOpener;
 import ij.process.ColorProcessor;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 
 public class PIVAnalyserTestDrive {
