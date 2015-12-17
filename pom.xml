@@ -21,6 +21,10 @@
 		<tag>HEAD</tag>
 		<url>https://github.com/fiji/PIV_analyser</url>
 	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/fiji/PIV_analyser/issues</url>
+	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
 		<url>http://jenkins.imagej.net/job/PIV_analyser/</url>
