@@ -82,8 +82,8 @@
 		<url>https://github.com/fiji/PIV_analyser/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/PIV_analyser/</url>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/fiji/PIV_analyser</url>
 	</ciManagement>
 
 	<properties>
