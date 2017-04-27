@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * field in one plane, using imaging and image analysis. It can be seen as one
  * of the most simple pattern matching problem implementation.
  * <p>
- * See the book <cite>Raffael, M.; Willert, C. & Kompenhans, J. (2007),
+ * See the book <cite>Raffael, M.; Willert, C. &amp; Kompenhans, J. (2007),
  * Particle Image Velocimetry: A Practical Guide (2nd ed.), Berlin:
  * Springer-Verlag, ISBN 978-3-540-72307-3 </cite>
  * <p>
@@ -61,7 +61,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Here are two examples of its first applications in Biology:
  * <ul>
  * <li>comparing flows in a drosophila embryo during gastrulation in control
- * situations and after photo-ablation - <cite>Supatto, W.; Débarre, D. &
+ * situations and after photo-ablation - <cite>Supatto, W.; Débarre, D. &amp;
  * Moulia, B. et al. (2005), "In vivo modulation of morphogenetic movements in
  * Drosophila embryos with femtosecond laser pulses", PNAS 102: 1047-1052, PMID
  * 15657140</cite>
@@ -177,7 +177,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  * 
- * @author Jean-Yves Tinevez <tinevez@mpi-cbg.de>
+ * @author Jean-Yves Tinevez
  * @version 1.1
  */
 public class PIV_analyser implements PlugInFilter {
@@ -710,7 +710,6 @@ public class PIV_analyser implements PlugInFilter {
 	 * Taken and modified from Stephan Saalfeld Optic_Flow.java plugin.
 	 * 
 	 * @param ip   The ImageProcessor to draw the color circle in
-	 * @param maxDistance  The max expected displacement
 	 */
 	final static public void colorCircle(ColorProcessor ip) {
 		final int lx = ip.getWidth();

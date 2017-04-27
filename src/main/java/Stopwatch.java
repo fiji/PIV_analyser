@@ -1,7 +1,7 @@
 /** 
  * Time the execution of any block of code.
  * <p> 
- * Copied from <a href=http://www.javapractices.com/topic/TopicAction.do?Id=85>javapractice.com</a>
+ * Copied from <a href="http://www.javapractices.com/topic/TopicAction.do?Id=85">javapractice.com</a>
  */
 
 public final class Stopwatch {
