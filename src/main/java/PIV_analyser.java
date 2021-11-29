@@ -503,8 +503,10 @@ public class PIV_analyser implements PlugInFilter {
 		startAndJoin(threads);  
 
 		// Add the MouseMotionListener that "deconvolves" color
-		color_canvas = color_imp.getCanvas();
-		color_canvas.addMouseMotionListener(getColorMouseListener(winsize_x/2.0f));
+		if (show_calculation) {
+			color_canvas = color_imp.getCanvas();
+			color_canvas.addMouseMotionListener(getColorMouseListener(winsize_x/2.0f));
+		}
 		
 		// Return result as array of ImagePlus
 		return new ImagePlus[] { u_imp, v_imp, pkh_imp, color_imp };
