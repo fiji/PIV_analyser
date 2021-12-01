@@ -6,6 +6,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.scijava.util.VersionUtils;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -206,7 +208,7 @@ public class PIV_analyser implements PlugInFilter
 	/*
 	 * CONSTANTS
 	 */
-	private static final String VERSION_STR = "1.2";
+	private static final String VERSION_STR = VersionUtils.getVersion( PIV_analyser.class );
 
 	private static final String PLUGIN_NAME = "PIV analyser";
 
