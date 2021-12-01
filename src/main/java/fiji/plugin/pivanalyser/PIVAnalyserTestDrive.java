@@ -1,3 +1,4 @@
+package fiji.plugin.pivanalyser;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.io.FileInfo;

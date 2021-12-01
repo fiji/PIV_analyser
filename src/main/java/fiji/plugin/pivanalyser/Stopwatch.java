@@ -1,3 +1,4 @@
+package fiji.plugin.pivanalyser;
 /** 
  * Time the execution of any block of code.
  * <p> 

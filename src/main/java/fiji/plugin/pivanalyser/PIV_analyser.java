@@ -1,3 +1,11 @@
+package fiji.plugin.pivanalyser;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -10,12 +18,6 @@ import ij.process.ColorProcessor;
 import ij.process.FHT;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
-
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <h3>PIV analysis</h3>
@@ -266,7 +268,8 @@ public class PIV_analyser implements PlugInFilter {
 	 * @param arg  Ignored
 	 * @param imp  The ImagePlus to analyze
 	 */
-	public int setup(String arg, ImagePlus imp) {
+	@Override
+	public int setup(final String arg, final ImagePlus imp) {
 		this.imp = imp;
 		this.pairs_param = new PairingParam();
 
@@ -282,18 +285,19 @@ public class PIV_analyser implements PlugInFilter {
 	 * Generate a generic dialog for the user to parameterize this plugin.
 	 * Should not be called, else by ImageJ menu itself.
 	 */
-	public void run(ImageProcessor ip) {
+	@Override
+	public void run(final ImageProcessor ip) {
 
 		// Get stack & set fields
-		ImageStack stack = imp.getStack();
-		int nslices = stack.getSize();
+		final ImageStack stack = imp.getStack();
+		final int nslices = stack.getSize();
 		if (nslices < 2) {
 			IJ.error("PIV_analysis requires at least two frames in the stack.");
 		}
 
 		// Prepare dialog
-		String current = imp.getTitle();
-		GenericDialog gd = new GenericDialog(PLUGIN_NAME + " v" + VERSION_STR);
+		final String current = imp.getTitle();
+		final GenericDialog gd = new GenericDialog(PLUGIN_NAME + " v" + VERSION_STR);
 		gd.addMessage(current);
 		gd.addChoice("Window size (px)", WINDOW_SIZE.STR, WINDOW_SIZE.STR[3]);
 		gd.addCheckbox("Diplay color wheel", true);
@@ -399,6 +403,7 @@ public class PIV_analyser implements PlugInFilter {
 				float[][] pkh = new float[image_width][image_height];
 				int[][] color_angle = new int[image_width][image_height];
 				
+				@Override
 				public void run() {
 
 					// Loop over image pairs
@@ -452,7 +457,7 @@ public class PIV_analyser implements PlugInFilter {
 
 						// Do masking 
 						if (do_masking) {
-							float max_pkh = getMax(pkh);
+							final float max_pkh = getMax(pkh);
 							mask(u, pkh, max_pkh);
 							mask(v, pkh, max_pkh);
 						}
@@ -530,8 +535,8 @@ public class PIV_analyser implements PlugInFilter {
 	 * @see FHT
 	 * @see PIVresult
 	 */
-	final public PIVresult findMax(final FHT pcm, boolean interpolate) {
-		PIVresult piv = new PIVresult();
+	final public PIVresult findMax(final FHT pcm, final boolean interpolate) {
+		final PIVresult piv = new PIVresult();
 		final float[] pixels = (float[]) pcm.getPixels();
 		final float e00, e10, e20, e01, e11, e21, e02, e12, e22;
 		float pkh = -Float.MAX_VALUE;
@@ -594,24 +599,24 @@ public class PIV_analyser implements PlugInFilter {
 				final float det = dxx * dyy - dxy * dxy;
 				if (det == 0) {
 					// data is linearly dependent, can't interpolate
-					piv.max_x_interpolated = (float) piv.max_x;
-					piv.max_y_interpolated = (float) piv.max_y;
+					piv.max_x_interpolated = piv.max_x;
+					piv.max_y_interpolated = piv.max_y;
 				}
 
 				// localize O = H-1 x D
 				ox = +dyy / det * dx - dxy / det * dy;
 				oy = -dxy / det * dx + dxx / det * dy;
 
-				piv.max_x_interpolated = (float) piv.max_x - 3 * ox;
-				piv.max_y_interpolated = (float) piv.max_y - 3 * oy;
+				piv.max_x_interpolated = piv.max_x - 3 * ox;
+				piv.max_y_interpolated = piv.max_y - 3 * oy;
 
-			} catch (ArrayIndexOutOfBoundsException e) {
-				piv.max_x_interpolated = (float) piv.max_x;
-				piv.max_y_interpolated = (float) piv.max_y;
+			} catch (final ArrayIndexOutOfBoundsException e) {
+				piv.max_x_interpolated = piv.max_x;
+				piv.max_y_interpolated = piv.max_y;
 			}
 		} else {
-			piv.max_x_interpolated = (float) piv.max_x;
-			piv.max_y_interpolated = (float) piv.max_y;
+			piv.max_x_interpolated = piv.max_x;
+			piv.max_y_interpolated = piv.max_y;
 		}
 
 		return piv;
@@ -664,7 +669,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * @param maxDistance   The max expected length of a vector
 	 * @return an int encoding for a color
 	 */
-	final static protected int colorVector(float xs, float ys, float maxDistance) {
+	final static protected int colorVector(float xs, float ys, final float maxDistance) {
 		xs /= maxDistance;
 		ys /= maxDistance;
 		final double a = Math.sqrt(xs * xs + ys * ys);
@@ -711,7 +716,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * 
 	 * @param ip   The ImageProcessor to draw the color circle in
 	 */
-	final static public void colorCircle(ColorProcessor ip) {
+	final static public void colorCircle(final ColorProcessor ip) {
 		final int lx = ip.getWidth();
 		final int ly = ip.getHeight();
 		final int r1 = Math.min(lx, ly) / 2;
@@ -733,9 +738,9 @@ public class PIV_analyser implements PlugInFilter {
 	}
 	
 	final static public void displayColorCircle(final float maxDisplacement) {
-		ColorProcessor cp = new ColorProcessor(COLOR_CIRCLE_SIZE, COLOR_CIRCLE_SIZE);
+		final ColorProcessor cp = new ColorProcessor(COLOR_CIRCLE_SIZE, COLOR_CIRCLE_SIZE);
 		colorCircle(cp);
-		ImagePlus cwimp = new ImagePlus("Color coded orientation", cp);
+		final ImagePlus cwimp = new ImagePlus("Color coded orientation", cp);
 		cwimp.show();
 		final ImageCanvas cwcanvas = cwimp.getCanvas();
 //		cwcanvas.addMouseMotionListener(getColorMouseListener());
@@ -744,16 +749,18 @@ public class PIV_analyser implements PlugInFilter {
 			private final int xc = COLOR_CIRCLE_SIZE/2;
 			private final int yc = COLOR_CIRCLE_SIZE/2;
 			
-			public void mouseDragged(MouseEvent e) {}
+			@Override
+			public void mouseDragged(final MouseEvent e) {}
 
-			public void mouseMoved(MouseEvent e) {
-				Point coord = cwcanvas.getCursorLoc();
-				int x = coord.x;
-				int y = coord.y;
-				int dx = x-xc;
-				int dy = y-yc;
-				double v = Math.sqrt(dx*dx+dy*dy) / COLOR_CIRCLE_SIZE * maxDisplacement;
-				double alpha = -Math.toDegrees( Math.atan2(dy, dx) );
+			@Override
+			public void mouseMoved(final MouseEvent e) {
+				final Point coord = cwcanvas.getCursorLoc();
+				final int x = coord.x;
+				final int y = coord.y;
+				final int dx = x-xc;
+				final int dy = y-yc;
+				final double v = Math.sqrt(dx*dx+dy*dy) / COLOR_CIRCLE_SIZE * maxDisplacement;
+				final double alpha = -Math.toDegrees( Math.atan2(dy, dx) );
 				IJ.showStatus( String.format("Velocity: %5.1f px/frame - Direction %3.0fº", v, alpha));
 			}});
 	}
@@ -770,7 +777,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * /w/trakem2.git?a=blob;f=mpi/fruitfly/general/MultiThreading.java;hb=HEAD
 	 */
 	private Thread[] newThreadArray() {
- 		int n_cpus = Runtime.getRuntime().availableProcessors();
+ 		final int n_cpus = Runtime.getRuntime().availableProcessors();
 		return new Thread[n_cpus];
 	}  
 	
@@ -778,7 +785,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * From Stephan Preibisch's Multithreading.java class. See: 
 	 * http://repo.or.cz/w/trakem2.git?a=blob;f=mpi/fruitfly/general/MultiThreading.java;hb=HEAD 
 	 */  
-	public static void startAndJoin(Thread[] threads)  
+	public static void startAndJoin(final Thread[] threads)  
 	{  
 		for (int ithread = 0; ithread < threads.length; ++ithread)  
 		{  
@@ -791,7 +798,7 @@ public class PIV_analyser implements PlugInFilter {
 		{     
 			for (int ithread = 0; ithread < threads.length; ++ithread)  
 				threads[ithread].join();  
-		} catch (InterruptedException ie)  
+		} catch (final InterruptedException ie)  
 		{  
 			throw new RuntimeException(ie);  
 		}  
@@ -810,16 +817,18 @@ public class PIV_analyser implements PlugInFilter {
 	final private static MouseMotionListener getColorMouseListener(final float maxVel) {
 		return new MouseMotionListener() {
 
-			public void mouseDragged(MouseEvent e) {			}
+			@Override
+			public void mouseDragged(final MouseEvent e) {			}
 
-			public void mouseMoved(MouseEvent e) {
+			@Override
+			public void mouseMoved(final MouseEvent e) {
 				final ImageCanvas source = (ImageCanvas) e.getComponent();
 				final Point coord = source.getCursorLoc();
 				final BufferedImage im = (BufferedImage) ( (ImageWindow) source.getParent() ).getImagePlus().getImage();
 				final int cp =im.getRGB(coord.x, coord.y);
-				final float r = (float) ( (cp >> 16) &0xff);
-				final float g = (float) ( (cp >> 8) &0xff);
-				final float b = (float) ( (cp)  &0xff);
+				final float r = (cp >> 16) &0xff;
+				final float g = (cp >> 8) &0xff;
+				final float b = (cp)  &0xff;
 				double alpha;
 				double magnitude;
 				if (b == 0) {
@@ -860,7 +869,7 @@ public class PIV_analyser implements PlugInFilter {
 		};
 	}
 	
-	final private void mask(float[][] arr, final float[][] mask_arr, final float max_mask_value) {
+	final private void mask(final float[][] arr, final float[][] mask_arr, final float max_mask_value) {
 		final float val = (float) (mask_value * max_mask_value);
 		for (int i = 0; i < mask_arr.length; i++) {
 			for (int j = 0; j < mask_arr[i].length; j++) {
@@ -879,8 +888,8 @@ public class PIV_analyser implements PlugInFilter {
 		return max;
 	}
 
-	private static void substractMean(FloatProcessor fp) {
-		float[] pixels = (float[]) fp.getPixels();
+	private static void substractMean(final FloatProcessor fp) {
+		final float[] pixels = (float[]) fp.getPixels();
 		float sum = pixels[0];
 		for (int i = 1; i < pixels.length; i++) {
 			sum += pixels[i];
@@ -919,10 +928,10 @@ public class PIV_analyser implements PlugInFilter {
 	 * @return A nx2 array of int, containing the indices of images for the n
 	 *         pairs
 	 */
-	private static int[][] buildImagePairs(int first, int last, int step,
-			int jump) {
-		int npairs = (int) Math.ceil((last - (first + jump - 1)) / step);
-		int[][] pairs = new int[npairs][2];
+	private static int[][] buildImagePairs(final int first, final int last, final int step,
+			final int jump) {
+		final int npairs = (int) Math.ceil((last - (first + jump - 1)) / step);
+		final int[][] pairs = new int[npairs][2];
 		int front, back;
 
 		for (int index = 0; index < npairs; index++) {
@@ -943,11 +952,11 @@ public class PIV_analyser implements PlugInFilter {
 	 *            pairs.
 	 * @return the array of array of image pairs
 	 */
-	private static int[][] buildImagePairs(PairingParam param) {
-		int first = param.first;
-		int last = param.last;
-		int step = param.step;
-		int jump = param.jump;
+	private static int[][] buildImagePairs(final PairingParam param) {
+		final int first = param.first;
+		final int last = param.last;
+		final int step = param.step;
+		final int jump = param.jump;
 		return buildImagePairs(first, last, step, jump);
 	}
 
@@ -962,7 +971,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * 
 	 * @param image_pairs   The nx2 array of int specifying the image pairs.
 	 */
-	public void setImagePairs(int[][] image_pairs) {
+	public void setImagePairs(final int[][] image_pairs) {
 		this.image_pairs = image_pairs;
 	}
 
@@ -976,7 +985,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * 
 	 * @param ws  The window size, specified by an enum
 	 */
-	public void setWinsize(WINDOW_SIZE ws) {
+	public void setWinsize(final WINDOW_SIZE ws) {
 		this.winsize_x = ws.toInt();
 		this.winsize_y = ws.toInt();
 	}
@@ -993,7 +1002,7 @@ public class PIV_analyser implements PlugInFilter {
 	 * @param doit
 	 *            The boolean flag
 	 */
-	public void setInterpolation(boolean doit) {
+	public void setInterpolation(final boolean doit) {
 		this.do_interpolation = doit;
 	}
 
